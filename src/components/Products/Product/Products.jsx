@@ -6,8 +6,10 @@ import { AddShoppingCart } from '@material-ui/icons'
 import useStyles from './styles';
 
 
-const Product = ({ product }) => {
+const Products = ({ product }) => {
     const classes = useStyles()
+
+    console.log(product);
 
     return (
         <div>
@@ -36,4 +38,4 @@ const Product = ({ product }) => {
     )
 }
 
-export default Product
+export default Products
