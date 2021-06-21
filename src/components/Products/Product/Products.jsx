@@ -6,28 +6,30 @@ import { AddShoppingCart } from '@material-ui/icons'
 import useStyles from './styles';
 
 
-const Products = ({ product }) => {
+const Products = ({ product, onAddToCart  }) => {
     const classes = useStyles()
 
-    console.log(product);
+    // console.log(product);
+    // return <div>test</div>
+    //used to test what the array or products is returning from the API
 
     return (
         <div>
             <Card className={classes.root}>
-                <CardMedia className={classes.media} image={product.image} title={product.name}/>
+                <CardMedia className={classes.media} image={product.media.source} title={product.name}/>
                 <CardContent>
                         <div className={classes.cardContent}>
                                 <Typography variant="h5" gutterBottom>
                                     {product.name}
                                 </Typography>
                                 <Typography variant="h5">
-                                    {product.price}
+                                    {product.price.formatted_with_symbol}
                                 </Typography>
                         </div>
-                        <Typography variant="body2" color="textSecondary">{product.description}</Typography>
+                        <Typography dangerouslySetInnerHTML={{__html:product.description}} variant="body2" color="textSecondary"></Typography>
                 </CardContent>
                 <CardActions disableSpacing className={classes.cardActions}>
-                    <IconButton aria-label="Add to Card"> 
+                    <IconButton aria-label="Add to Card" onClick={() => onAddToCart(product.id, 1)}> 
                         <AddShoppingCart/>
                     </IconButton> 
 

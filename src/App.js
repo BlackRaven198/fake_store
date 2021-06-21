@@ -3,11 +3,13 @@ import React, {useState, useEffect } from 'react'
 import Products from './components/Products/Products';
 import Navbar from './components/Navbar/Navbar';
 // import { Products, Navbar } from './src/components/Products/index' this was supposed to make it easier to link 
-
-import  { commerce } from './lib/commerce'
+import Cart from './components/Cart/Cart';
+import  { commerce } from './lib/commerce';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const App = () => {
     const [products, setProducts] = useState([]);
+    const [cart, setCart] = useState({});
 
     const fetchProducts = async () => {
         const { data } = await commerce.products.list();
@@ -15,18 +17,48 @@ const App = () => {
         setProducts(data);
     }
 
+    // const fetchCart = async () => {
+    //     const cart = await commerce.cart.retrieve();
+    //     setCart(cart)
+    // }
+    const fetchCart = async () => {
+        setCart(await commerce.cart.retrieve())
+    }
+
+    const handleAddToCart = async (productId, quantity) => {
+        const item = await commerce.cart.add(productId, quantity);
+
+        setCart(item.cart);
+    }
+
+
     useEffect(() => {
         fetchProducts();
+        fetchCart()
     }, []);
 
-
+   
 
     return (
-        <div>
-            <h1> Welcome to the Fake Store </h1>
-            <Navbar/>
-            <Products products={products}/>
+        <Router> 
+            <div>
+            <Navbar totalItems={cart.total_items} />
+            <Switch>
+                <Route exact path="/">
+                   <Products products={products} onAddToCart={handleAddToCart} />
+                </Route>
+
+                <Route exact path="/cart">
+                <Cart cart= {cart} />
+                </Route>
+                
+            </Switch>
+        
         </div>
+
+
+        </Router>
+        
     )
 }
 

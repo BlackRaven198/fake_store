@@ -4,28 +4,35 @@ import { ShoppingCart  } from '@material-ui/icons';
 // import classes from '*.module.css';
 // import logo from "./src/assets/Business_(170).jpg";
 import logo from  '../../assets/Business_(170).jpg';
-
 import useStyles from './styles';
+import  {Link, useLocation} from 'react-router-dom'
 
 
-const Navbar = () => {
+const Navbar = ({totalItems}) => {
     const classes = useStyles();
+    const location = useLocation();
+    
+    if(location.pathname === '/')
 
     return (
         <div>
             <AppBar position="fixed" className={classes.appBar} color="inherit">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title} color="inherit">
+                    <Typography component={Link} to="/" variant="h6" className={classes.title} color="inherit">
                         <img src={logo}  alt="Commerce.js" height="25px" className={classes.image} />
                         Commerce.js
                     </Typography>
                     <div className={classes.grow}/>
-                    <div className={classes.button}/>
-                        <IconButton aria-label="Show cart items" color="inherit">
-                            <Badge badgeContent={2} color="secondary">
+                    {location.pathname === '/' ? (
+                    <div className={classes.button}>
+                        <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
+                            <Badge badgeContent={totalItems} color="secondary">
                                 <ShoppingCart/>
                             </Badge>
                         </IconButton>
+                    </div>): console.log("Hello")}
+                
+
                 </Toolbar>
             </AppBar>
 
